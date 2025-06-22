@@ -1,0 +1,33 @@
+{
+  "name": "djiecloud-api",
+  "version": "1.0.0",
+  "description": "djie-cloud api for djiecloud.com",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "prod": "node app.js",
+    "seed": "node seeds/seed.js",
+    "generate-secret": "node generate-secret.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masadjie/djiecloud-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/masadjie/djiecloud-api/issues"
+  },
+  "homepage": "https://github.com/masadjie/djiecloud-api#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.0"
+  }
+}
