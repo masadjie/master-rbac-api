@@ -9,24 +9,12 @@ async function seed() {
 	try {
 		await connectDB();
 
-		// 1. Buat permission menu dengan actions dinamis
+		// 1. Buat permission menu tanpa actions di permission (actions di role)
 		const permissionsToSeed = [
-			{
-				name: "service",
-				actions: ["VIEW", "CREATE", "UPDATE", "DELETE", "EXPORT"],
-			},
-			{
-				name: "billing",
-				actions: ["VIEW", "CREATE", "PAY", "DOWNLOAD"],
-			},
-			{
-				name: "ai",
-				actions: ["VIEW", "USE", "TRAIN"],
-			},
-			{
-				name: "support",
-				actions: ["VIEW", "CREATE", "REPLY"],
-			},
+			{ name: "service", label: "Service" },
+			{ name: "billing", label: "Billing" },
+			{ name: "ai", label: "AI" },
+			{ name: "support", label: "Support" },
 		];
 		const permissionDocs = [];
 		for (const perm of permissionsToSeed) {
@@ -34,32 +22,51 @@ async function seed() {
 			if (!permission) {
 				permission = await Permission.create(perm);
 			} else {
-				// Update actions jika sudah ada (biar bisa update actions dinamis)
-				permission.actions = perm.actions;
+				permission.label = perm.label || permission.label;
 				await permission.save();
 			}
 			permissionDocs.push(permission);
 		}
 
-		// 2. Buat role super admin (punya semua permission)
+		// 2. Buat role super admin dengan granular permissions + actions
 		let superAdminRole = await Role.findOne({ name: "super admin" });
 		if (!superAdminRole) {
 			superAdminRole = await Role.create({
 				name: "super admin",
-				permissions: permissionDocs.map((p) => p._id), // semua permission
+				permissions: permissionDocs.map((p) => ({
+					permission: p._id,
+					actions: [
+						"VIEW",
+						"CREATE",
+						"UPDATE",
+						"DELETE",
+						"EXPORT",
+						"PAY",
+						"USE",
+						"TRAIN",
+						"REPLY",
+					],
+				})),
 			});
 		}
 
-		// 3. Buat role user (hanya menu service)
+		// 3. Buat role user dengan granular permissions + actions (hanya service dengan VIEW dan CREATE)
 		let userRole = await Role.findOne({ name: "user" });
 		if (!userRole) {
 			const servicePermission = permissionDocs.find(
 				(p) => p.name === "service"
 			);
-			userRole = await Role.create({
-				name: "user",
-				permissions: [servicePermission._id], // hanya permission service
-			});
+			if (servicePermission) {
+				userRole = await Role.create({
+					name: "user",
+					permissions: [
+						{
+							permission: servicePermission._id,
+							actions: ["VIEW", "CREATE"],
+						},
+					],
+				});
+			}
 		}
 
 		// 4. Buat super admin user
@@ -71,6 +78,8 @@ async function seed() {
 				email,
 				password,
 				role: superAdminRole._id,
+				fullName: "Super Admin",
+				phoneNumber: "081234567890",
 			});
 			await adminUser.save();
 			console.log("Super admin user created!");
@@ -87,6 +96,8 @@ async function seed() {
 				email: userEmail,
 				password: userPassword,
 				role: userRole._id,
+				fullName: "Normal User",
+				phoneNumber: "089876543210",
 			});
 			await normalUser.save();
 			console.log("User created!");

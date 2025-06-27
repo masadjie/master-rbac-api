@@ -8,7 +8,6 @@ const { hasPermission } = require("../../middleware/permission.middleware");
 router.get(
 	"/",
 	authenticate,
-	hasPermission("service", "VIEW"),
 	menuController.getMenu
 );
 
