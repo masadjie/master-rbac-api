@@ -8,10 +8,11 @@ exports.createServiceItem = async (req, res) => {
 		}
 		const serviceItem = new ServiceItem(req.body);
 		await serviceItem.save();
-		await serviceItem
-			.populate("tags")
-			.populate("service")
-			.populate("billingCycle");
+		await serviceItem.populate([
+			{ path: "tags" },
+			{ path: "service" },
+			{ path: "billingCycle" },
+		]);
 		res.status(201).json({ success: true, serviceItem });
 	} catch (err) {
 		res.status(500).json({ success: false, message: err.message });

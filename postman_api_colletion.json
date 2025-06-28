@@ -1,0 +1,1670 @@
+{
+	"info": {
+		"_postman_id": "e7ebeed7-5867-484e-81d6-a26c38fb0b7f",
+		"name": "Djiecloud API RBAC Granular",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4993052"
+	},
+	"item": [{
+			"name": "Auth Management",
+			"item": [{
+					"name": "Register (Step 1 - Request OTP via WhatsApp)",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"password123\",\n  \"fullName\": \"John Doe\",\n  \"phoneNumber\": \"08123456789\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/register",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "auth", "register"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP (Step 2)",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"<user_id_from_register>\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/verify-otp",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "auth", "verify-otp"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "auth", "login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request OTP (Resend, max 3x per 24h)",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"<user_id_from_register_or_login>\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/request-otp",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "auth", "request-otp"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/refresh-token",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "auth", "refresh-token"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/logout",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "auth", "logout"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Google Login",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idToken\": \"<google_id_token>\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/google-login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "auth", "google-login"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Permission Management",
+			"item": [{
+					"name": "List Permissions",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/permissions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Permissions (Show On Menu Only)",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/permissions?showOnMenu=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"permissions"
+							],
+							"query": [{
+								"key": "showOnMenu",
+								"value": "true"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Permission",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"service\",\n  \"label\": \"Service\",\n  \"showOnMenu\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/permissions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Permission",
+					"request": {
+						"method": "PUT",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"support\",\n  \"label\": \"Customer Support\",\n  \"showOnMenu\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/permissions/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"permissions",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Permission",
+					"request": {
+						"method": "DELETE",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/permissions/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"permissions",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role Management",
+			"item": [{
+					"name": "List Roles",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{accessToken}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Role (Granular)",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"user\",\n  \"permissions\": [\n    { \"permission\": \"<service_permission_id>\", \"actions\": [\"VIEW\", \"CREATE\"] }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Role (Granular)",
+					"request": {
+						"method": "PUT",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"super admin\",\n  \"permissions\": [\n    { \"permission\": \"<service_permission_id>\", \"actions\": [\"VIEW\", \"CREATE\", \"UPDATE\", \"DELETE\", \"EXPORT\"] },\n    { \"permission\": \"<billing_permission_id>\", \"actions\": [\"VIEW\", \"CREATE\", \"PAY\", \"DOWNLOAD\"] },\n    { \"permission\": \"<ai_permission_id>\", \"actions\": [\"VIEW\", \"USE\", \"TRAIN\"] },\n    { \"permission\": \"<support_permission_id>\", \"actions\": [\"VIEW\", \"CREATE\", \"REPLY\"] }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/roles/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"roles",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{accessToken}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/roles/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"roles",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role By ID",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/roles/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"roles",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tag Management",
+			"item": [{
+					"name": "List Tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/tags",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Tag",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"automation\",\n  \"label\": \"Automation\",\n  \"color\": \"#009688\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/tags",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tag",
+					"request": {
+						"method": "PUT",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"automation\",\n  \"label\": \"Automation Updated\",\n  \"color\": \"#ff9800\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/tags/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tags",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tag",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/tags/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tags",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service Management",
+			"item": [{
+					"name": "Create Service",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"n8n\",\n  \"description\": \"Workflow automation platform\",\n  \"icon\": \"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/cloud.svg\",\n  \"tags\": [\"<tag_id>\"],\n  \"comingSoon\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Services",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service By ID",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service",
+					"request": {
+						"method": "PUT",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"n8n Updated\",\n  \"description\": \"Update description\",\n  \"icon\": \"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/cloud.svg\",\n  \"tags\": [\"<tag_id>\"],\n  \"comingSoon\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service",
+					"request": {
+						"method": "DELETE",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ServiceItem (Variant) Management",
+			"item": [{
+					"name": "Create ServiceItem (Variant)",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service\": \"<service_id>\",\n  \"name\": \"n8n Basic\",\n  \"description\": \"Only for Small and Simple Tasks, NOT FOR CHATBOT OR AI AGENT\",\n  \"specs\": [\n    { \"key\": \"CPU\", \"value\": 0.5, \"unit\": \"Core\" },\n    { \"key\": \"RAM\", \"value\": 512, \"unit\": \"MB\" }\n  ],\n  \"price\": 15000,\n  \"billingCycle\": \"<billing_cycle_id>\",\n  \"tags\": [\"<tag_id>\"],\n  \"comingSoon\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service-items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All ServiceItems (Variant)",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service-items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ServiceItems (Variant) by Service",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service-items?service=<service_id>",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service-items"
+							],
+							"query": [{
+								"key": "service",
+								"value": "<service_id>"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ServiceItem (Variant) By ID",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service-items/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service-items",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update ServiceItem (Variant)",
+					"request": {
+						"method": "PUT",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"n8n Basic Updated\",\n  \"description\": \"Update deskripsi\",\n  \"specs\": [\n    { \"key\": \"CPU\", \"value\": 1, \"unit\": \"Core\" },\n    { \"key\": \"RAM\", \"value\": 1024, \"unit\": \"MB\" }\n  ],\n  \"price\": 20000,\n  \"billingCycle\": \"<billing_cycle_id>\",\n  \"tags\": [\"<tag_id>\"],\n  \"comingSoon\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service-items/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service-items",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete ServiceItem (Variant)",
+					"request": {
+						"method": "DELETE",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/service-items/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"service-items",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Billing Cycle Management",
+			"item": [{
+					"name": "List Billing Cycles",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/billing-cycles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"billing-cycles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Billing Cycle By ID",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/billingcycle/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"billingcycle",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Billing Cycle",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Yearly\",\n  \"label\": \"Billed Yearly\",\n  \"duration\": 12,\n  \"unit\": \"month\",\n  \"isActive\": true,\n  \"order\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/billing-cycles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"billing-cycles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Billing Cycle",
+					"request": {
+						"method": "PUT",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Monthly\",\n  \"label\": \"Billed monthly (updated)\",\n  \"duration\": 1,\n  \"unit\": \"month\",\n  \"isActive\": true,\n  \"order\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/billingcycle/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"billingcycle",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Billing Cycle",
+					"request": {
+						"method": "DELETE",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/billingcycle/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"billingcycle",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Menu",
+			"item": [{
+				"name": "Get Menu",
+				"request": {
+					"method": "GET",
+					"header": [{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}],
+					"url": {
+						"raw": "http://localhost:4000/api/v1/menu",
+						"protocol": "http",
+						"host": [
+							"localhost"
+						],
+						"port": "4000",
+						"path": [
+							"api",
+							"v1",
+							"menu"
+						]
+					}
+				},
+				"response": []
+			}]
+		},
+		{
+			"name": "Service Item Management",
+			"item": [{
+					"name": "Create Service Item",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"n8n Basic\",\n  \"description\": \"Only for Small and Simple Tasks\",\n  \"price\": 15000,\n  \"icon\": \"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/cloud.svg\",\n  \"tags\": [\"<tag_id_automation>\", \"<tag_id_development>\"],\n  \"specs\": [\n    { \"key\": \"CPU\", \"value\": 0.5, \"unit\": \"Core\" },\n    { \"key\": \"RAM\", \"value\": 512, \"unit\": \"MB\" },\n    { \"key\": \"Bandwidth\", \"value\": 100, \"unit\": \"GB\" }\n  ],\n  \"note\": \"NOT FOR CHATBOT OR AI AGENT\",\n  \"service\": \"<service_id_utama>\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/service-items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"service-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Service Items (search/filter)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/service-items?q=n8n&tag=<tag_id_automation>&service=<service_id_utama>",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"service-items"
+							],
+							"query": [{
+									"key": "q",
+									"value": "n8n"
+								},
+								{
+									"key": "tag",
+									"value": "<tag_id_automation>"
+								},
+								{
+									"key": "service",
+									"value": "<service_id_utama>"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service Item By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/service-items/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"service-items",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service Item",
+					"request": {
+						"method": "PUT",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"n8n Basic Updated\",\n  \"description\": \"Update deskripsi\",\n  \"price\": 20000,\n  \"icon\": \"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/cloud.svg\",\n  \"tags\": [\"<tag_id_automation>\", \"<tag_id_bisnis>\"],\n  \"specs\": [\n    { \"key\": \"CPU\", \"value\": 1, \"unit\": \"Core\" },\n    { \"key\": \"RAM\", \"value\": 1024, \"unit\": \"MB\" }\n  ],\n  \"note\": \"Update note\",\n  \"service\": \"<service_id_utama>\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/service-items/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"service-items",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service Item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/service-items/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"service-items",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [{
+					"name": "List Users",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"password123\",\n  \"fullName\": \"John Doe\",\n  \"phoneNumber\": \"08123456789\",\n  \"role\": \"<role_id>\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user1update@example.com\",\n  \"password\": \"newpassword123\",\n  \"fullName\": \"John Updated\",\n  \"phoneNumber\": \"08987654321\",\n  \"role\": \"<role_id>\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [{
+								"key": "id"
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Balance Management",
+			"item": [{
+					"name": "Get User Balance",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/:userId",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", ":userId"],
+							"variable": [{
+								"key": "userId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Balance History",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/:userId/history",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", ":userId", "history"],
+							"variable": [{
+								"key": "userId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top Up User Balance (Manual)",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 100000,\n  \"description\": \"Top up via bank transfer\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/:userId/topup",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", ":userId", "topup"],
+							"variable": [{
+								"key": "userId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Credit User Balance (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 50000,\n  \"description\": \"Bonus saldo dari admin\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/:userId/credit",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", ":userId", "credit"],
+							"variable": [{
+								"key": "userId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Debit User Balance",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 25000,\n  \"description\": \"Pembayaran layanan\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/:userId/debit",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", ":userId", "debit"],
+							"variable": [{
+								"key": "userId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Top Up (Bank Transfer)",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 100000,\n  \"payment_type\": \"bank_transfer\",\n  \"bank\": \"bca\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/:userId/request-topup",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", ":userId", "request-topup"],
+							"variable": [{
+								"key": "userId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Top Up (QRIS)",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 100000,\n  \"payment_type\": \"qris\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/:userId/request-topup",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", ":userId", "request-topup"],
+							"variable": [{
+								"key": "userId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Top Up (GoPay)",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 100000,\n  \"payment_type\": \"gopay\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/:userId/request-topup",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", ":userId", "request-topup"],
+							"variable": [{
+								"key": "userId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Payment Status (Manual)",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "Bearer {{token}}"
+						}],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/payment/status/:orderId",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", "payment", "status", ":orderId"],
+							"variable": [{
+								"key": "orderId"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Webhook (Manual Test)",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"value": "application/json"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"order_id\": \"topup-:userId-:timestamp\",\n  \"transaction_status\": \"settlement\",\n  \"gross_amount\": \"100000\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-balances/payment/webhook",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "4000",
+							"path": ["api", "v1", "user-balances", "payment", "webhook"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WA",
+			"item": [{
+				"name": "New Request",
+				"request": {
+					"method": "GET",
+					"header": []
+				},
+				"response": []
+			}]
+		}
+	]
+}

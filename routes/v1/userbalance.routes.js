@@ -40,11 +40,19 @@ router.get(
 
 // Top Up balance (khusus, bisa dipakai user atau admin)
 router.post(
-    "/:userId/topup",
-    authenticate,
-    hasPermission("userbalance", "UPDATE"),
-    userBalanceController.topUp
-  );
+	"/:userId/request-topup",
+	authenticate,
+	hasPermission("userbalance", "CREATE"),
+	userBalanceController.requestTopUp
+);
+
+router.get(
+	"/payment/status/:orderId",
+	authenticate,
+	userBalanceController.checkPaymentStatus
+);
+
+router.post("/payment/webhook", userBalanceController.midtransWebhook);
   
 
 module.exports = router;

@@ -13,9 +13,15 @@ exports.getMenu = async (req, res, next) => {
 		});
 		if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-		// Hanya tampilkan permission yang showOnMenu true
+		// Hanya tampilkan permission yang showOnMenu true DAN user punya akses VIEW
 		const menu = user.role.permissions
-			.filter((item) => item.permission && item.permission.showOnMenu)
+			.filter(
+				(item) =>
+					item.permission &&
+					item.permission.showOnMenu &&
+					Array.isArray(item.actions) &&
+					item.actions.includes("VIEW")
+			)
 			.map((item) => ({
 				key: item.permission.name,
 				label: item.permission.label || item.permission.name,

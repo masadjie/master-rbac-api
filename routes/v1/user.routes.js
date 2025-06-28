@@ -8,16 +8,17 @@ const { hasPermission } = require("../../middleware/permission.middleware");
 router.get(
 	"/",
 	authenticate,
-	hasPermission("userManagement", "VIEW"),
+	hasPermission("userManagement", ["VIEW", "READ"]),
 	userController.list
 );
 
 router.get(
 	"/:id",
 	authenticate,
-	hasPermission("userManagement", "VIEW"),
+	hasPermission("userManagement", ["VIEW", "READ"]),
 	userController.getById
 );
+
 
 router.post(
 	"/",
