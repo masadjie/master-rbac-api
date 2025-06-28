@@ -1,6 +1,4 @@
-Tentu! Berikut adalah format README.md yang siap pakai untuk GitHub, lengkap dengan cara pakai, contoh .env, dan instruksi script.
-
-# Djiecloud API
+# Node.js + Mongodb With RBAC (Role Baed Access Control) Restfull API
 
 API backend untuk layanan cloud, otentikasi, RBAC, pembayaran, dan integrasi WhatsApp OTP.
 
